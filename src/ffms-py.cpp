@@ -79,10 +79,10 @@ BOOST_PYTHON_MODULE(ffms2) {
 	def("create_audio_source", FFMS_CreateAudioSource, return_value_policy<return_opaque_pointer>());
 	def("destroy_video_source", FFMS_DestroyVideoSource);
 	def("destroy_audio_source", FFMS_DestroyAudioSource);
-	def("get_video_properties", FFMS_GetVideoProperties, return_value_policy<return_opaque_pointer>());
-	def("get_audio_properties", FFMS_GetAudioProperties, return_value_policy<return_opaque_pointer>());
-	def("get_frame", FFMS_GetFrame, return_value_policy<return_opaque_pointer>());
-	def("get_frame_by_time", FFMS_GetFrameByTime, return_value_policy<return_opaque_pointer>());
+	def("get_video_properties", FFMS_GetVideoProperties, return_value_policy<reference_existing_object>());
+	def("get_audio_properties", FFMS_GetAudioProperties, return_value_policy<reference_existing_object>());
+	def("get_frame", FFMS_GetFrame, return_value_policy<reference_existing_object>());
+	def("get_frame_by_time", FFMS_GetFrameByTime, return_value_policy<reference_existing_object>());
 	def("get_audio", FFMS_GetAudio);
 	def("set_output_format_v", FFMS_SetOutputFormatV);
 	def("reset_output_format_v", FFMS_ResetOutputFormatV);
@@ -100,11 +100,11 @@ BOOST_PYTHON_MODULE(ffms2) {
 	def("get_codec_name_i", FFMS_GetCodecNameI);
 	def("get_format_name_i", FFMS_GetFormatNameI);
 	def("get_num_frames", FFMS_GetNumFrames);
-	def("get_frame_info", FFMS_GetFrameInfo, return_value_policy<return_opaque_pointer>());
+	def("get_frame_info", FFMS_GetFrameInfo, return_value_policy<reference_existing_object>());
 	def("get_track_from_index", FFMS_GetTrackFromIndex, return_value_policy<return_opaque_pointer>());
 	def("get_track_from_video", FFMS_GetTrackFromVideo, return_value_policy<return_opaque_pointer>());
 	def("get_track_from_audio", FFMS_GetTrackFromAudio, return_value_policy<return_opaque_pointer>());
-	def("get_time_base", FFMS_GetTimeBase, return_value_policy<return_opaque_pointer>());
+	def("get_time_base", FFMS_GetTimeBase, return_value_policy<reference_existing_object>());
 	def("write_timecodes", FFMS_WriteTimecodes);
 	def("make_index", FFMS_MakeIndex, return_value_policy<return_opaque_pointer>());
 	def("default_audio_filename", FFMS_DefaultAudioFilename);
