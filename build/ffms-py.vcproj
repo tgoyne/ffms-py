@@ -172,6 +172,14 @@
 			RelativePath="..\src\ffms-py.cpp"
 			>
 		</File>
+		<File
+			RelativePath="..\src\wrappers.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\src\wrappers.h"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>
