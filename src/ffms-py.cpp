@@ -4,6 +4,8 @@
 
 #include <boost/python.hpp>
 
+#include "enum_mappings.h"
+
 static void init_ffms() {
 	static bool initialized = false;
 	if (!initialized) {

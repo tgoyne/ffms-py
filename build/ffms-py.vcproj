@@ -161,6 +161,14 @@
 	</References>
 	<Files>
 		<File
+			RelativePath="..\src\enum_mappings.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\src\enum_mappings.h"
+			>
+		</File>
+		<File
 			RelativePath="..\src\ffms-py.cpp"
 			>
 		</File>
