@@ -39,3 +39,17 @@ void video_source::set_pp(const char *pp) {
 void video_source::reset_pp() {
 	FFMS_ResetPP(v);
 }
+
+audio_source::audio_source(const char *file, int track, FFMS_Index *index, const char *delay_mode) {
+	a = FFMS_CreateAudioSource(file, track, index, string_to_enum(ffms_enum_audio_delay_mode, delay_mode), 0);
+}
+
+audio_source::~audio_source() {
+	FFMS_DestroyAudioSource(a);
+}
+
+std::vector<uint8_t> audio_source::get_audio(int64_t start, size_t count) {
+	std::vector<uint8_t> buf(count);
+	FFMS_GetAudio(a, &buf[0], start, count, 0);
+	return buf;
+}

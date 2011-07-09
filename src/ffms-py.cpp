@@ -12,6 +12,7 @@
 #define MEM_FUN(cls, fun) .def(#fun, &cls::fun)
 #define MEM_FUN_EXIST(cls, fun) .def(#fun, &cls::fun, return_value_policy<reference_existing_object>())
 #define MEM_FUN_OPAQUE(cls, fun) .def(#fun, &cls::fun, return_value_policy<return_opaque_pointer>())
+#define MEM_FUN_MANAGE(cls, fun) .def(#fun, &cls::fun, return_value_policy<manage_new_object>())
 
 BOOST_PYTHON_MODULE(ffms2) {
 	FFMS_Init(0, true);
@@ -89,21 +90,10 @@ BOOST_PYTHON_MODULE(ffms2) {
 		MEM_FUN(video_source, set_pp)
 		MEM_FUN(video_source, reset_pp);
 
-	def("create_video_source", FFMS_CreateVideoSource, return_value_policy<return_opaque_pointer>());
-	def("destroy_video_source", FFMS_DestroyVideoSource);
-	def("get_video_properties", FFMS_GetVideoProperties, return_value_policy<reference_existing_object>());
-	def("get_frame", FFMS_GetFrame, return_value_policy<reference_existing_object>());
-	def("get_frame_by_time", FFMS_GetFrameByTime, return_value_policy<reference_existing_object>());
-	def("set_output_format_v", FFMS_SetOutputFormatV);
-	def("reset_output_format_v", FFMS_ResetOutputFormatV);
-	def("set_pp", FFMS_SetPP);
-	def("reset_pp", FFMS_ResetPP);
-	def("get_track_from_video", FFMS_GetTrackFromVideo, return_value_policy<return_opaque_pointer>());
+	CLASS(audio_source, const char *, int, FFMS_Index *, const char *)
+		MEM_FUN(audio_source, get_audio);
 
-	def("create_audio_source", FFMS_CreateAudioSource, return_value_policy<return_opaque_pointer>());
-	def("destroy_audio_source", FFMS_DestroyAudioSource);
 	def("get_audio_properties", FFMS_GetAudioProperties, return_value_policy<reference_existing_object>());
-	def("get_audio", FFMS_GetAudio);
 
 	def("destroy_index", FFMS_DestroyIndex);
 	def("get_source_type", FFMS_GetSourceType);
