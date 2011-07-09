@@ -51,24 +51,6 @@ BOOST_PYTHON_MODULE(ffms2) {
 		.def_readonly("repeat_pict", &FFMS_FrameInfo::RepeatPict)
 		.def_readonly("key_frame", &FFMS_FrameInfo::KeyFrame);
 
-	class_<FFMS_VideoProperties>("video_properties")
-		.def_readonly("fps_denominator", &FFMS_VideoProperties::FPSDenominator)
-		.def_readonly("fps_numerator", &FFMS_VideoProperties::FPSNumerator)
-		.def_readonly("rff_denominator", &FFMS_VideoProperties::RFFDenominator)
-		.def_readonly("rff_numerator", &FFMS_VideoProperties::RFFNumerator)
-		.def_readonly("num_frames", &FFMS_VideoProperties::NumFrames)
-		.def_readonly("sar_num", &FFMS_VideoProperties::SARNum)
-		.def_readonly("sar_den", &FFMS_VideoProperties::SARDen)
-		.def_readonly("crop_top", &FFMS_VideoProperties::CropTop)
-		.def_readonly("crop_bottom", &FFMS_VideoProperties::CropBottom)
-		.def_readonly("crop_left", &FFMS_VideoProperties::CropLeft)
-		.def_readonly("crop_right", &FFMS_VideoProperties::CropRight)
-		.def_readonly("top_field_first", &FFMS_VideoProperties::TopFieldFirst)
-		.def_readonly("color_space", &FFMS_VideoProperties::ColorSpace)
-		.def_readonly("color_range", &FFMS_VideoProperties::ColorRange)
-		.def_readonly("first_time", &FFMS_VideoProperties::FirstTime)
-		.def_readonly("last_time", &FFMS_VideoProperties::LastTime);
-
 	def("get_version", FFMS_GetVersion);
 	def("get_log_level", FFMS_GetLogLevel);
 	def("set_log_level", FFMS_SetLogLevel);
@@ -80,7 +62,23 @@ BOOST_PYTHON_MODULE(ffms2) {
 		MEM_FUN(video_source, set_output_format)
 		MEM_FUN(video_source, reset_output_format)
 		MEM_FUN(video_source, set_pp)
-		MEM_FUN(video_source, reset_pp);
+		MEM_FUN(video_source, reset_pp)
+		R_PROP(video_source, fps_denominator)
+		R_PROP(video_source, fps_numerator)
+		R_PROP(video_source, rff_denominator)
+		R_PROP(video_source, rff_numerator)
+		R_PROP(video_source, num_frames)
+		R_PROP(video_source, sar_num)
+		R_PROP(video_source, sar_den)
+		R_PROP(video_source, crop_top)
+		R_PROP(video_source, crop_bottom)
+		R_PROP(video_source, crop_left)
+		R_PROP(video_source, crop_right)
+		R_PROP(video_source, top_field_first)
+		R_PROP(video_source, color_space)
+		R_PROP(video_source, color_range)
+		R_PROP(video_source, first_time)
+		R_PROP(video_source, last_time);
 
 	CLASS(audio_source, const char *, int, FFMS_Index *, const char *)
 		MEM_FUN(audio_source, get_audio)

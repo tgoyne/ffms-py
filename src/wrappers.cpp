@@ -6,6 +6,24 @@
 
 video_source::video_source(const char *file, int track, FFMS_Index *index, int threads, const char *seek_mode) {
 	v = FFMS_CreateVideoSource(file, track, index, threads, string_to_enum(ffms_enum_seek_mode, seek_mode), 0);
+
+	const FFMS_VideoProperties *vp = FFMS_GetVideoProperties(v);
+	fps_denominator = vp->FPSDenominator;
+	fps_numerator = vp->FPSNumerator;
+	rff_denominator = vp->RFFDenominator;
+	rff_numerator = vp->RFFNumerator;
+	num_frames = vp->NumFrames;
+	sar_num = vp->SARNum;
+	sar_den = vp->SARDen;
+	crop_top = vp->CropTop;
+	crop_bottom = vp->CropBottom;
+	crop_left = vp->CropLeft;
+	crop_right = vp->CropRight;
+	top_field_first = vp->TopFieldFirst;
+	color_space = vp->ColorSpace;
+	color_range = vp->ColorRange;
+	first_time = vp->FirstTime;
+	last_time = vp->LastTime;
 }
 
 video_source::~video_source() {
