@@ -30,5 +30,14 @@ public:
 	audio_source(const char *file, int track, FFMS_Index *index, const char *delay_mode);
 	~audio_source();
 
+	int sample_format;
+	int sample_rate;
+	int bits_per_sample;
+	int channels;
+	int64_t channel_layout;
+	int64_t num_samples;
+	double first_time;
+	double last_time;
+
 	std::vector<uint8_t> get_audio(int64_t start, size_t count);
 };

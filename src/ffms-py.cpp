@@ -14,6 +14,8 @@
 #define MEM_FUN_OPAQUE(cls, fun) .def(#fun, &cls::fun, return_value_policy<return_opaque_pointer>())
 #define MEM_FUN_MANAGE(cls, fun) .def(#fun, &cls::fun, return_value_policy<manage_new_object>())
 
+#define R_PROP(cls, prop) .def_readonly(#prop, &cls::prop)
+
 BOOST_PYTHON_MODULE(ffms2) {
 	FFMS_Init(0, true);
 
@@ -67,16 +69,6 @@ BOOST_PYTHON_MODULE(ffms2) {
 		.def_readonly("first_time", &FFMS_VideoProperties::FirstTime)
 		.def_readonly("last_time", &FFMS_VideoProperties::LastTime);
 
-	class_<FFMS_AudioProperties>("audio_properties")
-		.def_readonly("sample_format", &FFMS_AudioProperties::SampleFormat)
-		.def_readonly("sample_rate", &FFMS_AudioProperties::SampleRate)
-		.def_readonly("bits_per_sample", &FFMS_AudioProperties::BitsPerSample)
-		.def_readonly("channels", &FFMS_AudioProperties::Channels)
-		.def_readonly("channel_layout", &FFMS_AudioProperties::ChannelLayout)
-		.def_readonly("num_samples", &FFMS_AudioProperties::NumSamples)
-		.def_readonly("first_time", &FFMS_AudioProperties::FirstTime)
-		.def_readonly("last_time", &FFMS_AudioProperties::LastTime);
-
 	def("get_version", FFMS_GetVersion);
 	def("get_log_level", FFMS_GetLogLevel);
 	def("set_log_level", FFMS_SetLogLevel);
@@ -91,9 +83,15 @@ BOOST_PYTHON_MODULE(ffms2) {
 		MEM_FUN(video_source, reset_pp);
 
 	CLASS(audio_source, const char *, int, FFMS_Index *, const char *)
-		MEM_FUN(audio_source, get_audio);
-
-	def("get_audio_properties", FFMS_GetAudioProperties, return_value_policy<reference_existing_object>());
+		MEM_FUN(audio_source, get_audio)
+		R_PROP(audio_source, sample_format)
+		R_PROP(audio_source, sample_rate)
+		R_PROP(audio_source, bits_per_sample)
+		R_PROP(audio_source, channels)
+		R_PROP(audio_source, channel_layout)
+		R_PROP(audio_source, num_samples)
+		R_PROP(audio_source, first_time)
+		R_PROP(audio_source, last_time);
 
 	def("destroy_index", FFMS_DestroyIndex);
 	def("get_source_type", FFMS_GetSourceType);
