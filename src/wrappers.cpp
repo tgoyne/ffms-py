@@ -28,14 +28,6 @@ void index::write(const char *filename) {
 	FFMS_WriteIndex(filename, idx, 0);
 }
 
-video_source *index::open_video(int track, int threads, const char *seek_mode) {
-	return new video_source(file, track, idx, threads, seek_mode);
-}
-
-audio_source *index::open_audio(int track, const char *delay_mode) {
-	return new audio_source(file, track, idx, delay_mode);
-}
-
 video_source::video_source(const char *file, int track, FFMS_Index *index, int threads, const char *seek_mode) {
 	v = FFMS_CreateVideoSource(file, track, index, threads, string_to_enum(ffms_enum_seek_mode, seek_mode), 0);
 
@@ -113,3 +105,50 @@ std::vector<uint8_t> audio_source::get_audio(int64_t start, size_t count) {
 	FFMS_GetAudio(a, &buf[0], start, count, 0);
 	return buf;
 }
+
+track::track(FFMS_Index *idx, const char *file, int track_number)
+: idx(idx)
+, file(file)
+, track_number(track_number)
+, t(FFMS_GetTrackFromIndex(idx, track_number))
+{
+}
+
+const char *track::type() {
+	return enum_to_string(ffms_enum_track_type, FFMS_GetTrackType(t));
+}
+
+int track::length() {
+	return FFMS_GetNumFrames(t);
+}
+
+const FFMS_FrameInfo *track::get_frame_info(int frame) {
+	return FFMS_GetFrameInfo(t, frame);
+}
+
+const FFMS_TrackTimeBase *track::get_time_base() {
+	return FFMS_GetTimeBase(t);
+}
+
+void track::write_timecodes(const char *filename) {
+	FFMS_WriteTimecodes(t, filename, 0);
+}
+
+video_track::video_track(FFMS_Index *idx, const char *file, int track_number)
+: track(idx, file, track_number)
+{
+}
+
+video_source *video_track::open(int threads, const char *seek_mode) {
+	return new video_source(file, track_number, idx, threads, seek_mode);
+}
+
+audio_track::audio_track(FFMS_Index *idx, const char *file, int track_number)
+: track(idx, file, track_number)
+{
+}
+
+audio_source *audio_track::open(const char *delay_mode) {
+	return new audio_source(file, track_number, idx, delay_mode);
+}
+

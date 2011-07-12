@@ -3,6 +3,8 @@ struct FFMS_Index;
 struct FFMS_Track;
 struct FFMS_AudioSource;
 struct FFMS_VideoSource;
+struct FFMS_FrameInfo;
+struct FFMS_TrackTimeBase;
 
 #include <stdint.h>
 #include <vector>
@@ -70,7 +72,34 @@ public:
 	int get_first_indexed_track_of_type(const char *type);
 	FFMS_Track *operator[](int track);
 	void write(const char *filename);
+};
 
-	video_source *open_video(int track, int threads, const char *seek_mode);
-	audio_source *open_audio(int track, const char *delay_mode);
+class track {
+protected:
+	FFMS_Index *idx;
+	const char *file;
+	int track_number;
+	FFMS_Track *t;
+public:
+	track(FFMS_Index *idx, const char *file, int track_number);
+
+	const char *type();
+	int length();
+	const FFMS_FrameInfo *get_frame_info(int frame);
+	const FFMS_TrackTimeBase *get_time_base();
+	void write_timecodes(const char *filename);
+};
+
+class video_track : track {
+public:
+	video_track(FFMS_Index *idx, const char *file, int track_number);
+
+	video_source *open(int threads, const char *seek_mode);
+};
+
+class audio_track : track {
+public:
+	audio_track(FFMS_Index *idx, const char *file, int track_number);
+
+	audio_source *open(const char *delay_mode);
 };

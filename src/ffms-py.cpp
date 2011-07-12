@@ -59,9 +59,7 @@ BOOST_PYTHON_MODULE(ffms2) {
 		MEM_FUN(index, get_source_type)
 		MEM_FUN(index, get_first_track_of_type)
 		MEM_FUN(index, get_first_indexed_track_of_type)
-		MEM_FUN(index, write)
-		MEM_FUN_MANAGE(index, open_video)
-		MEM_FUN_MANAGE(index, open_audio);
+		MEM_FUN(index, write);
 
 	CLASS(video_source)
 		MEM_FUN_EXIST(video_source, get_frame)
@@ -99,19 +97,24 @@ BOOST_PYTHON_MODULE(ffms2) {
 		R_PROP(audio_source, first_time)
 		R_PROP(audio_source, last_time);
 
+	CLASS(track)
+		MEM_FUN(track, type)
+		MEM_FUN(track, length)
+		MEM_FUN_EXIST(track, get_frame_info)
+		MEM_FUN_EXIST(track, get_time_base)
+		MEM_FUN(track, write_timecodes);
+
+	CLASS(video_track)
+		MEM_FUN_MANAGE(video_track, open);
+
+	CLASS(audio_track)
+		MEM_FUN_MANAGE(audio_track, open);
+
 	def("get_source_type_i", FFMS_GetSourceTypeI);
-	def("get_num_tracks", FFMS_GetNumTracks);
 	def("get_num_tracks_i", FFMS_GetNumTracksI);
-	def("get_track_type", FFMS_GetTrackType);
 	def("get_track_type_i", FFMS_GetTrackTypeI);
 	def("get_codec_name_i", FFMS_GetCodecNameI);
 	def("get_format_name_i", FFMS_GetFormatNameI);
-	def("get_num_frames", FFMS_GetNumFrames);
-	def("get_frame_info", FFMS_GetFrameInfo, return_value_policy<reference_existing_object>());
-	def("get_track_from_index", FFMS_GetTrackFromIndex, return_value_policy<return_opaque_pointer>());
-	def("get_track_from_audio", FFMS_GetTrackFromAudio, return_value_policy<return_opaque_pointer>());
-	def("get_time_base", FFMS_GetTimeBase, return_value_policy<reference_existing_object>());
-	def("write_timecodes", FFMS_WriteTimecodes);
 	def("make_index", FFMS_MakeIndex, return_value_policy<return_opaque_pointer>());
 	def("default_audio_filename", FFMS_DefaultAudioFilename);
 	def("create_indexer", FFMS_CreateIndexer, return_value_policy<return_opaque_pointer>());
