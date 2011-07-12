@@ -4,6 +4,32 @@
 
 #include "enum_mappings.h"
 
+index::index(FFMS_Index *idx) : idx(idx) { }
+
+index::~index() {
+	FFMS_DestroyIndex(idx);
+}
+
+const char *index::get_source_type() {
+	return enum_to_string(ffms_enum_sources, FFMS_GetSourceType(idx));
+}
+
+int index::get_first_track_of_type(const char *type) {
+	return FFMS_GetFirstTrackOfType(idx, string_to_enum(ffms_enum_track_type, type), 0);
+}
+
+int index::get_first_indexed_track_of_type(const char *type) {
+	return FFMS_GetFirstIndexedTrackOfType(idx, string_to_enum(ffms_enum_track_type, type), 0);
+}
+
+FFMS_Track *index::operator[](int track) {
+	return FFMS_GetTrackFromIndex(idx, track);
+}
+
+void index::write(const char *filename) {
+	FFMS_WriteIndex(filename, idx, 0);
+}
+
 video_source::video_source(const char *file, int track, FFMS_Index *index, int threads, const char *seek_mode) {
 	v = FFMS_CreateVideoSource(file, track, index, threads, string_to_enum(ffms_enum_seek_mode, seek_mode), 0);
 

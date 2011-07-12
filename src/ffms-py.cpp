@@ -55,6 +55,12 @@ BOOST_PYTHON_MODULE(ffms2) {
 	def("get_log_level", FFMS_GetLogLevel);
 	def("set_log_level", FFMS_SetLogLevel);
 
+	CLASS(index, FFMS_Index*)
+		MEM_FUN(index, get_source_type)
+		MEM_FUN(index, get_first_track_of_type)
+		MEM_FUN(index, get_first_indexed_track_of_type)
+		MEM_FUN(index, write);
+
 	CLASS(video_source, const char*, int, FFMS_Index *, int, const char *)
 		MEM_FUN_EXIST(video_source, get_frame)
 		MEM_FUN_EXIST(video_source, get_frame_by_time)
@@ -91,11 +97,7 @@ BOOST_PYTHON_MODULE(ffms2) {
 		R_PROP(audio_source, first_time)
 		R_PROP(audio_source, last_time);
 
-	def("destroy_index", FFMS_DestroyIndex);
-	def("get_source_type", FFMS_GetSourceType);
 	def("get_source_type_i", FFMS_GetSourceTypeI);
-	def("get_first_track_of_type", FFMS_GetFirstTrackOfType);
-	def("get_first_indexed_track_of_type", FFMS_GetFirstIndexedTrackOfType);
 	def("get_num_tracks", FFMS_GetNumTracks);
 	def("get_num_tracks_i", FFMS_GetNumTracksI);
 	def("get_track_type", FFMS_GetTrackType);
@@ -116,7 +118,6 @@ BOOST_PYTHON_MODULE(ffms2) {
 	def("cancel_indexing", FFMS_CancelIndexing);
 	def("read_index", FFMS_ReadIndex, return_value_policy<return_opaque_pointer>());
 	def("index_belongs_to_file", FFMS_IndexBelongsToFile);
-	def("write_index", FFMS_WriteIndex);
 	def("get_pix_fmt", FFMS_GetPixFmt);
 	def("get_present_sources", FFMS_GetPresentSources);
 	def("get_enabled_sources", FFMS_GetEnabledSources);

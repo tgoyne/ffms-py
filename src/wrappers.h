@@ -7,6 +7,19 @@ struct FFMS_VideoSource;
 #include <stdint.h>
 #include <vector>
 
+class index {
+	FFMS_Index *idx;
+public:
+	index(FFMS_Index *idx);
+	~index();
+
+	const char *get_source_type();
+	int get_first_track_of_type(const char *type);
+	int get_first_indexed_track_of_type(const char *type);
+	FFMS_Track *operator[](int track);
+	void write(const char *filename);
+};
+
 class video_source {
 	FFMS_VideoSource *v;
 public:
