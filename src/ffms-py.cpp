@@ -7,7 +7,7 @@
 
 #include "wrappers.h"
 
-#define CLASS(cls, ...) class_<cls>(#cls, init<__VA_ARGS__>())
+#define CLASS(cls) class_<cls>(#cls, no_init)
 
 #define MEM_FUN(cls, fun) .def(#fun, &cls::fun)
 #define MEM_FUN_EXIST(cls, fun) .def(#fun, &cls::fun, return_value_policy<reference_existing_object>())
@@ -55,13 +55,15 @@ BOOST_PYTHON_MODULE(ffms2) {
 	def("get_log_level", FFMS_GetLogLevel);
 	def("set_log_level", FFMS_SetLogLevel);
 
-	CLASS(index, FFMS_Index*)
+	CLASS(index)
 		MEM_FUN(index, get_source_type)
 		MEM_FUN(index, get_first_track_of_type)
 		MEM_FUN(index, get_first_indexed_track_of_type)
-		MEM_FUN(index, write);
+		MEM_FUN(index, write)
+		MEM_FUN_MANAGE(index, open_video)
+		MEM_FUN_MANAGE(index, open_audio);
 
-	CLASS(video_source, const char*, int, FFMS_Index *, int, const char *)
+	CLASS(video_source)
 		MEM_FUN_EXIST(video_source, get_frame)
 		MEM_FUN_EXIST(video_source, get_frame_by_time)
 		MEM_FUN_OPAQUE(video_source, get_track)
@@ -86,7 +88,7 @@ BOOST_PYTHON_MODULE(ffms2) {
 		R_PROP(video_source, first_time)
 		R_PROP(video_source, last_time);
 
-	CLASS(audio_source, const char *, int, FFMS_Index *, const char *)
+	CLASS(audio_source)
 		MEM_FUN(audio_source, get_audio)
 		R_PROP(audio_source, sample_format)
 		R_PROP(audio_source, sample_rate)

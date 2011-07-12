@@ -7,19 +7,6 @@ struct FFMS_VideoSource;
 #include <stdint.h>
 #include <vector>
 
-class index {
-	FFMS_Index *idx;
-public:
-	index(FFMS_Index *idx);
-	~index();
-
-	const char *get_source_type();
-	int get_first_track_of_type(const char *type);
-	int get_first_indexed_track_of_type(const char *type);
-	FFMS_Track *operator[](int track);
-	void write(const char *filename);
-};
-
 class video_source {
 	FFMS_VideoSource *v;
 public:
@@ -70,4 +57,20 @@ public:
 	double last_time;
 
 	std::vector<uint8_t> get_audio(int64_t start, size_t count);
+};
+
+class index {
+	FFMS_Index *idx;
+	const char *file;
+public:
+	~index();
+
+	const char *get_source_type();
+	int get_first_track_of_type(const char *type);
+	int get_first_indexed_track_of_type(const char *type);
+	FFMS_Track *operator[](int track);
+	void write(const char *filename);
+
+	video_source *open_video(int track, int threads, const char *seek_mode);
+	audio_source *open_audio(int track, const char *delay_mode);
 };

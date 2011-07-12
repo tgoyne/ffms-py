@@ -4,8 +4,6 @@
 
 #include "enum_mappings.h"
 
-index::index(FFMS_Index *idx) : idx(idx) { }
-
 index::~index() {
 	FFMS_DestroyIndex(idx);
 }
@@ -28,6 +26,14 @@ FFMS_Track *index::operator[](int track) {
 
 void index::write(const char *filename) {
 	FFMS_WriteIndex(filename, idx, 0);
+}
+
+video_source *index::open_video(int track, int threads, const char *seek_mode) {
+	return new video_source(file, track, idx, threads, seek_mode);
+}
+
+audio_source *index::open_audio(int track, const char *delay_mode) {
+	return new audio_source(file, track, idx, delay_mode);
 }
 
 video_source::video_source(const char *file, int track, FFMS_Index *index, int threads, const char *seek_mode) {
